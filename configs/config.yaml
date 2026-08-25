@@ -1,0 +1,51 @@
+region:
+  lat_min: 5.0
+  lat_max: 30.0
+  lon_min: 45.0
+  lon_max: 105.0
+  resolution: 0.25
+
+date_range:
+  start: "2019-01-01"
+  end: "2019-01-05"
+
+depths:
+  - 0
+  - 5
+  - 10
+  - 20
+  - 30
+  - 50
+  - 75
+  - 100
+  - 125
+  - 150
+  - 200
+  - 300
+  - 500
+  - 700
+  - 1000
+
+copernicus:
+  product_id: "GLOBAL_MULTIYEAR_PHY_001_030"
+
+  datasets:
+    physics: "cmems_mod_glo_phy_my_0.083deg_P1D-m"
+
+  variables:
+    temperature: "thetao"
+    salinity: "so"
+    uo: "uo"
+    vo: "vo"
+    ssh: "zos"
+
+sss:
+  dataset: "cmems_obs-mob_glo_phy-sss_my_multi_P1D"
+  variable: "sos"
+
+sst:
+  dataset: "C3S-GLO-SST-L4-REP-OBS-SST"
+  variable: "analysed_sst"
+
+output:
+  raw_dir: "data/raw"

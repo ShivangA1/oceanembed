@@ -1,0 +1,92 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# =========================
+# Virtual environment
+# =========================
+.venv/
+venv/
+env/
+
+# =========================
+# Environment / secrets
+# =========================
+.env
+.env.*
+!.env.example
+
+# Copernicus / CDS credentials
+.cdsapirc
+*.key
+*.pem
+
+# =========================
+# Raw ocean datasets
+# =========================
+data/raw/
+*.nc
+*.nc4
+*.grib
+*.grib2
+*.h5
+*.hdf5
+
+# =========================
+# Processed datasets
+# =========================
+data/processed/
+
+# Regridded/intermediate data
+data/regridded/
+
+# =========================
+# ML outputs
+# =========================
+models/checkpoints/
+*.pt
+*.pth
+*.ckpt
+
+# Training outputs
+training/*.png
+training/*.json
+training/runs/
+runs/
+wandb/
+
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# Temporary files
+# =========================
+*.tmp
+*.temp
+*.bak
+
+# =========================
+# IDE
+# =========================
+.vscode/
+.idea/
