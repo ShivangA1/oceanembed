@@ -1,0 +1,12 @@
+copernicusmarine
+xarray
+netCDF4
+xarray-regrid
+torch
+numpy
+pandas
+matplotlib
+scikit-learn
+fastapi
+uvicorn
+pydantic
