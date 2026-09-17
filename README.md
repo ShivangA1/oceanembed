@@ -1,73 +1,82 @@
 # oceanembed
 
-**Goal:** oceanembed learns compact, reusable embeddings of ocean state (temperature,
-salinity, sea surface height, and currents) from Copernicus Marine GLORYS reanalysis
-data over the North Indian Ocean (5–30°N, 45–105°E). These embeddings are trained on
-gridded, depth-resolved ocean fields and are meant to serve as a foundation for
-downstream tasks like anomaly detection, forecasting, or regional ocean analysis. A
-lightweight backend and frontend are included to serve trained embeddings/predictions
-and visualize them interactively.
+**Goal:** oceanembed learns compact, reusable embeddings of ocean state (temperature, salinity, sea surface height, and currents) from Copernicus Marine GLORYS reanalysis data over the North Indian Ocean (5–30°N, 45–105°E). These embeddings are trained on gridded, depth-resolved ocean fields and serve as a foundation for downstream tasks like anomaly detection, forecasting, or regional ocean analysis. A lightweight AI service and frontend are included to serve trained embeddings/predictions and visualize them interactively.
 
-## Project structure
+Built for **Smart India Hackathon (SIH) Problem Statement #26066**, under INCOIS/MoES: *"Satellite Embedding-Based Subsurface Ocean Temperature Reconstruction."*
+
+## Project Structure
 
 ```
 oceanembed/
-├── configs/         # config.yaml — region, resolution, depth levels, date range
-├── data/            # raw and processed ocean datasets (not committed)
-├── preprocessing/   # download, regrid, and clean GLORYS data
-├── models/          # model architectures
-├── training/         # training loops and experiment scripts
-├── validation/       # evaluation metrics and validation notebooks/scripts
-├── backend/          # FastAPI service to serve embeddings/predictions
-├── frontend/         # UI for exploring results
-└── notebooks/        # exploratory analysis
+├── ai-service/          # Data pipeline, model, and API — preprocessing, training,
+│                        # validation, and the FastAPI backend that serves predictions
+├── frontend/            # UI for exploring results (map + depth-temperature profiles)
+├── requirements.txt     # Python dependencies for ai-service
+├── run_ai.bat            # Windows quick-start script for the AI service
+├── run_frontend.bat       # Windows quick-start script for the frontend
+└── .gitignore
 ```
+
+## Approach
+
+- A **CNN Satellite Encoder** compresses a 7-channel input patch (surface satellite observations) into a latent embedding.
+- An **MLP Temperature Decoder** maps that embedding to a 15-depth temperature profile.
+
+## Region & Depth Coverage
+
+| | Value |
+|---|---|
+| Latitude range | 5°N – 30°N |
+| Longitude range | 45°E – 105°E |
+| Spatial resolution | 0.25° |
+| Depth levels (m) | 0, 5, 10, 20, 30, 50, 75, 100, 125, 150, 200, 300, 500, 700, 1000 |
+
+## Tech Stack
+
+- **Data & ML:** `copernicusmarine`, `xarray`, `xarray-regrid`, `netCDF4`, `h5netcdf`, `dask`, `torch`, `numpy`, `pandas`, `scipy`, `scikit-learn`, `matplotlib`
+- **API:** `fastapi`, `uvicorn`, `pydantic`
+- **Frontend:** React + Leaflet (clickable map with depth-temperature profile charts)
 
 ## Setup
 
 ```bash
+git clone https://github.com/ShivangA1/oceanembed.git
+cd oceanembed
 python -m venv venv
 source venv/bin/activate      # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-You'll also need a free [Copernicus Marine](https://data.marine.copernicus.eu/register)
-account. Log in once locally so `copernicusmarine` can authenticate:
+You'll also need a free [Copernicus Marine](https://data.marine.copernicus.eu/register) account. Log in once locally so `copernicusmarine` can authenticate:
 
 ```bash
 copernicusmarine login
 ```
 
-Edit `configs/config.yaml` to set your desired `date_range.start` and `date_range.end`
-before running any stage.
+## Running
 
-## Running each stage
+**On Windows**, the included batch scripts handle setup + launch:
 
-1. **Preprocessing** — download GLORYS variables for the configured region/dates and
-   regrid them to a common 0.25° grid across the specified depth levels:
-   ```bash
-   python preprocessing/download_and_regrid.py --config configs/config.yaml
-   ```
+```bash
+run_ai.bat         # starts the AI service (preprocessing/training/API, as configured)
+run_frontend.bat    # starts the frontend
+```
 
-2. **Training** — train the embedding model on the preprocessed data:
-   ```bash
-   python training/train.py --config configs/config.yaml
-   ```
+**Manually:**
 
-3. **Validation** — evaluate the trained model against held-out data or downstream tasks:
-   ```bash
-   python validation/evaluate.py --config configs/config.yaml --checkpoint models/checkpoint.pt
-   ```
+```bash
+# AI service (from ai-service/)
+uvicorn main:app --reload
 
-4. **Backend** — serve the trained model via a REST API:
-   ```bash
-   uvicorn backend.main:app --reload
-   ```
+# Frontend (from frontend/)
+npm install
+npm start
+```
 
-5. **Frontend** — run the UI (see `frontend/README.md` once a framework is chosen) to
-   query the backend and visualize embeddings/predictions.
+## Validation
 
-6. **Notebooks** — open `notebooks/` in Jupyter for exploratory analysis at any stage:
-   ```bash
-   jupyter lab notebooks/
-   ```
+Model predictions are validated against held-out **ARGO float** profiles (via `argopy`), not used during training, comparing correlation, RMSE, and bias at each depth level.
+
+## License
+
+TBD
