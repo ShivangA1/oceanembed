@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-PROCESSED_DIR = Path("data/processed")
+PROCESSED_DIR = Path("ai-service/data/processed")
 SPLIT = "train"
 
 

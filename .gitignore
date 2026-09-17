@@ -30,7 +30,7 @@ env/
 # =========================
 # Raw ocean datasets
 # =========================
-data/raw/
+ai-service/data/raw/
 *.nc
 *.nc4
 *.grib
@@ -41,23 +41,23 @@ data/raw/
 # =========================
 # Processed datasets
 # =========================
-data/processed/
+ai-service/data/processed/
 
 # Regridded/intermediate data
-data/regridded/
+ai-service/data/regridded/
 
 # =========================
 # ML outputs
 # =========================
-models/checkpoints/
+ai-service/models/checkpoints/
 *.pt
 *.pth
 *.ckpt
 
 # Training outputs
-training/*.png
-training/*.json
-training/runs/
+ai-service/training/*.png
+ai-service/training/*.json
+ai-service/training/runs/
 runs/
 wandb/
 
@@ -90,3 +90,5 @@ desktop.ini
 # =========================
 .vscode/
 .idea/
+
+frontend/node_modules
